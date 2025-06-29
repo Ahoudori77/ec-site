@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>商品詳細 | わんすこ</title>
+</head>
+<body>
+  <h1>商品詳細</h1>
+  <div id="product-detail"></div>
+  <a href="index.html">← トップに戻る</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = parseInt(params.get('id'));
+
+    fetch('sample-products.json')
+      .then(res => res.json())
+      .then(products => {
+        const product = products.find(p => p.id === productId);
+        const detail = document.getElementById('product-detail');
+
+        if (product) {
+          detail.innerHTML = `
+            <h2>${product.name}</h2>
+            <img src="${product.image}" alt="${product.name}" width="300" />
+            <p>価格: ￥${product.price}</p>
+            <p>サイズ: ${product.size}</p>
+            <p>${product.description}</p>
+          `;
+        } else {
+          detail.innerHTML = '<p>商品が見つかりませんでした。</p>';
+        }
+      })
+      .catch(error => {
+        console.error('商品データの読み込みに失敗しました:', error);
+      });
+  </script>
+</body>
+</html>

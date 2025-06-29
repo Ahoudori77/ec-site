@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>商品出品 | わんすこ</title>
+</head>
+<body>
+  <h1>商品を出品する</h1>
+  <form id="post-form">
+    <label>商品名：<input type="text" name="name" required></label><br>
+    <label>カテゴリ：
+      <select name="category">
+        <option value="おもちゃ">おもちゃ</option>
+        <option value="服">服</option>
+        <option value="フード">フード</option>
+      </select>
+    </label><br>
+    <label>価格：<input type="number" name="price" required></label><br>
+    <label>サイズ：
+      <select name="size">
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="全犬種">全犬種</option>
+      </select>
+    </label><br>
+    <label>説明：<textarea name="description" rows="4"></textarea></label><br>
+    <label>画像URL：<input type="text" name="image"></label><br>
+
+    <button type="submit">出品する</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('post-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const product = {
+        id: Date.now(),
+        name: formData.get('name'),
+        category: formData.get('category'),
+        price: parseInt(formData.get('price')),
+        size: formData.get('size'),
+        description: formData.get('description'),
+        image: formData.get('image')
+      };
+
+      console.log('出品された商品：', product);
+
+      alert("出品完了！（ただし保存はまだだよ）");
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>

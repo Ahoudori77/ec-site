@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "ふわふわぬいぐるみ",
+    "category": "おもちゃ",
+    "price": 1500,
+    "size": "S",
+    "description": "小型犬向けのやわらかいぬいぐるみです。",
+    "image": "images/toy1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "もこもこ冬服",
+    "category": "服",
+    "price": 2800,
+    "size": "M",
+    "description": "寒い日も安心のあったか犬用冬服です。",
+    "image": "images/clothes1.jpg"
+  },
+  {
+    "id": 3,
+    "name": "国産鶏むねおやつ",
+    "category": "フード",
+    "price": 980,
+    "size": "全犬種",
+    "description": "無添加で安心な国産鶏むねおやつです。",
+    "image": "images/food1.jpg"
+  }
+]
