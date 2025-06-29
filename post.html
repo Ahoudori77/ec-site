@@ -32,7 +32,7 @@
 
   <script>
     const form = document.getElementById('post-form');
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const formData = new FormData(form);
@@ -43,14 +43,30 @@
         price: parseInt(formData.get('price')),
         size: formData.get('size'),
         description: formData.get('description'),
-        image: formData.get('image')
+        image: formData.get('image'),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        owner: "guest",
+        stock: 1,
+        is_active: true
       };
 
-      console.log('出品された商品：', product);
+      try {
+        const response = await fetch('http://localhost:7071/api/productsPost',{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(product)
+        });
 
-      alert("出品完了！（ただし保存はまだだよ）");
+        const result = await response.json();
+        console.log('サーバーからの応答:', result);
+        alert("出品完了!");
 
-      form.reset();
+        form.reset();
+      } catch (error) {
+        console.error('エラー:', error);
+        alert("エラーが発生しました");
+      }
     });
   </script>
 </body>
