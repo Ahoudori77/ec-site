@@ -1,32 +1,32 @@
-const { app } = require('@azure/functions');
+require('dotenv').config();
 
-app.http('productsPost', {
-  methods: ['POST'],
-  authLevel: 'anonymous',
+const { CosmosClient } = require("@azure/cosmos");
+const { app } = require("@azure/functions");
+
+const endpoint = process.env.COSMOS_DB_URI;
+const key = process.env.COSMOS_DB_KEY;
+const databaseId = process.env.COSMOS_DB_NAME;
+const containerId = process.env.COSMOS_DB_CONTAINER;
+
+const client = new CosmosClient({ endpoint, key });
+
+app.http("productsPost", {
+  methods: ["POST"],
+  authLevel: "anonymous",
   handler: async (request, context) => {
-    context.log(`productsPost にリクエストを受け取りました: ${request.url}`);
+    try {
+      const data = await request.json();
+      const container = client.database(databaseId).container(containerId);
 
-        try {
-            const product = await request.json();
+      if (!data.id) {
+        data.id = String(Date.now());
+      }
 
-      context.log('受け取った商品データ:', product);
-
-      return {
-        status: 200,
-        jsonBody: {
-          message: '商品データを受け取りました！',
-          data: product
-        }
-      };
-    } catch (error) {
-      context.log.error('JSON解析エラー:', error);
-
-      return {
-        status: 400,
-        jsonBody: {
-          error: '不正なデータ形式です（JSON形式で送ってね）'
-        }
-      };
+      const { resource } = await container.items.create(data);
+      return { status: 201, body: `商品が登録されました: ${resource.id}` };
+    } catch (err) {
+      context.error(err);
+      return { status: 500, body: "登録に失敗しました" };
     }
-  }
+  },
 });
