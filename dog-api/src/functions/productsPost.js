@@ -23,10 +23,22 @@ app.http("productsPost", {
       }
 
       const { resource } = await container.items.create(data);
-      return { status: 201, body: `商品が登録されました: ${resource.id}` };
+      return { 
+        status: 201, 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message:`商品が登録されました: ${resource.id}` 
+        })
+      };
     } catch (err) {
       context.error(err);
-      return { status: 500, body: "登録に失敗しました" };
+      return { 
+        status: 500, 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          message:"登録に失敗しました"
+        })
+      };
     }
   },
 });

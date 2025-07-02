@@ -37,7 +37,7 @@
 
       const formData = new FormData(form);
       const product = {
-        id: Date.now(),
+        id: String(Date.now()),
         name: formData.get('name'),
         category: formData.get('category'),
         price: parseInt(formData.get('price')),
