@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>商品一覧 | わんすこ</title>
+</head>
+<body>
+  <h1>商品一覧</h1>
+  <div id="product-list"></div>
+
+  <script>
+    async function loadProducts() {
+      try {
+        const response = await fetch('http://localhost:7071/api/productsGet');
+        const products = await response.json();
+
+        const list = document.getElementById('product-list');
+        list.innerHTML = '';
+
+        products.forEach(product => {
+          const card = document.createElement('div');
+          card.style.border = '1px solid #ccc';
+          card.style.padding = '10px';
+          card.style.margin = '10px';
+
+          card.innerHTML = `
+            <h2>${product.name}</h2>
+            <img src="${product.image || 'https://via.placeholder.com/150'}" alt="${product.name}" width="150" />
+            <p>価格: ￥${product.price}</p>
+            <p>サイズ: ${product.size}</p>
+            <p>${product.description}</p>
+          `;
+
+          list.appendChild(card);
+        });
+      } catch (error) {
+        console.error('エラー:', error);
+        document.getElementById('product-list').innerText = '商品が取得できませんでした';
+      }
+    }
+
+    loadProducts();
+  </script>
+</body>
+</html>
