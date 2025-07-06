@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>商品詳細 | わんすこ</title>
+  </head>
+  <body>
+    <h1>商品詳細</h1>
+    <div id="product-detail">
+      <p>読み込み中...</p>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
+
+      const detailContainer = document.getElementById('product-detail');
+
+      if (productId) {
+        fetch('http://localhost:7071/api/productsGet')
+          .then(response => response.json())
+          .then(data => {
+            const product = data.find(item => item => item.id === productId);
+            if (product) {
+              detailContainer.innerHTML = `
+                <h2>${product.name}</h2>
+                <img src="${product.image || 'https://via.placeholder.com/150'}" alt="${product.name}">
+                <p>価格: ￥${product.price}</p>
+                <p>サイズ: ${product.size}</p>
+                <p>${product.description}</p>
+              `;
+            } else {
+              detailContainer.innerHTML = '<p>商品が見つかりませんでした。</P>';
+            }
+          })
+          .catch(error => {
+            console.error('エラー:', error);
+            detailContainer.innerHTML = '<p>エラーが発生しました。</P>';
+          });
+      } else {
+        detailContainer.innerHTML = '<p>商品IDが指定されていません。</p>';
+      }
+    </script>
+  </body>
+</html>
