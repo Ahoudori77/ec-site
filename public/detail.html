@@ -41,6 +41,34 @@
       } else {
         detailContainer.innerHTML = '<p>商品IDが指定されていません。</p>';
       }
+
+      document.getElementById('purchase-button').addEventListener('click', async () => {
+        const productId = product.id;
+        const purchaseData = {
+          id: String(Date.now()),
+          product_id: product.id,
+          product_name: product.name,
+          price: product.price,
+          quantity: 1,
+          buyer: "guest",
+          purchased_at: new Date().toISOString()
+        };
+
+        try {
+          const response = await fetch('http://localhost:7071/api/purchaseProduct', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(purchaseData)
+          });
+
+          const result = await response.json();
+          console.log('購入結果:', result);
+          alert("購入完了しました！");
+        } catch (error) {
+          console.error('購入エラー:', error);
+          alert("購入に失敗しました");
+        }
+      });
     </script>
   </body>
 </html>
