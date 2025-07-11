@@ -3,7 +3,7 @@ const { CosmosClient } = require("@azure/cosmos");
 const { app } = require("@azure/functions");
 
 const endpoint = process.env.COSMOS_DB_URI;
-const key = proce.env.COSMOS_DB_KEY;
+const key = process.env.COSMOS_DB_KEY;
 const databaseId = process.env.COSMOS_DB_NAME;
 const containerId = "orders";
 
@@ -11,7 +11,7 @@ const client = new CosmosClient({ endpoint, key });
 
 app.http("purchaseProduct", {
   methods: ["POST"],
-  authLevel: "anoymous",
+  authLevel: "anonymous",
   handler: async (requestAnimationFrame, context) => {
     try {
       const data = await requestAnimationFrame.json();
@@ -28,7 +28,7 @@ app.http("purchaseProduct", {
         body: { message: `購入が登録されました: ${resource.id}` }
       };
     } catch (err) {
-      context.log.error(err);
+      context.error(err);
       return {
         status: 500,
         headers: { "Content-Type": "application/json" },
